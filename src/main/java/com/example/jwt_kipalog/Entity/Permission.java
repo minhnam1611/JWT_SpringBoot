@@ -10,7 +10,7 @@ import javax.persistence.Table;
 @Table(name = "tb_Permission")
 @Getter
 @Setter
-public class Permission extends Base{
+public class Permission extends Base {
     private String permissionName;
 
     private String permissionKey;

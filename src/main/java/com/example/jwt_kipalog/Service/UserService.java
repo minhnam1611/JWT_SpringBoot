@@ -5,5 +5,6 @@ import com.example.jwt_kipalog.Security.UserPrincipal;
 
 public interface UserService {
     User createUser(User user);
+
     UserPrincipal findByUsername(String username);
 }

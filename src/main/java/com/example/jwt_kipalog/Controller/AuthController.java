@@ -30,23 +30,24 @@ public class AuthController {
 
     @GetMapping("/hello")
     @PreAuthorize("hasAnyAuthority('USER_READ')")
-    public ResponseEntity hello(){
+    public ResponseEntity hello() {
         return ResponseEntity.ok("hello");
     }
 
     @PostMapping("/register")
-    public User register(@RequestBody User user){
+    public User register(@RequestBody User user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         return userService.createUser(user);
     }
+
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody User user){
+    public ResponseEntity<?> login(@RequestBody User user) {
         UserPrincipal userPrincipal = userService.findByUsername(user.getUsername());
         //user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         System.out.println(user.getPassword());
         System.out.println(userPrincipal.getPassword());
-        if (null == userPrincipal || !bCryptPasswordEncoder.matches(user.getPassword(),userPrincipal.getPassword())) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("tài khoản hoặc mật khẩu không chính xác");
+        if (null == userPrincipal || !bCryptPasswordEncoder.matches(user.getPassword(), userPrincipal.getPassword())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Đăng Nhập không thành công Master");
         }
         Token token = new Token();
         token.setToken(jwtUtil.generateToken(userPrincipal));

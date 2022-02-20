@@ -12,7 +12,7 @@ import java.util.Date;
 @Table(name = "tb_Token")
 @Getter
 @Setter
-public class Token extends Base{
+public class Token extends Base {
     @Column(length = 1000)
     private String token;
 

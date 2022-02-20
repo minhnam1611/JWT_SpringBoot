@@ -24,44 +24,49 @@ public class JwtUtil {
     private static final String USER = "user";
     private static final String SECRET = "anhdangminhnamthatladeptraiquadiahihihihihihihihihihihihihihihihihihi";
 
-    public String generateToken(UserPrincipal user){
+    public String generateToken(UserPrincipal user) {
         String token = null;
-        try{
+        try {
             JWTClaimsSet.Builder builder = new JWTClaimsSet.Builder();
             builder.claim(USER, user);
             builder.expirationTime(generateExpirationDate());
             JWTClaimsSet claimsSet = builder.build();
-            SignedJWT signedJWT = new SignedJWT(new JWSHeader(JWSAlgorithm.HS256),claimsSet);
-            JWSSigner signer =  new MACSigner(SECRET.getBytes());
+            SignedJWT signedJWT = new SignedJWT(new JWSHeader(JWSAlgorithm.HS256), claimsSet);
+            JWSSigner signer = new MACSigner(SECRET.getBytes());
             signedJWT.sign(signer);
             token = signedJWT.serialize();
-        }catch (Exception e){
+        } catch (Exception e) {
             logger.error(e.getMessage());
         }
         return token;
     }
+
     public Date generateExpirationDate() {
-        return new Date(System.currentTimeMillis() + 1000*60);
+        return new Date(System.currentTimeMillis() + 1000 * 60);
     }
-    private JWTClaimsSet getClaimsFromToken(String token){
+
+    private JWTClaimsSet getClaimsFromToken(String token) {
         JWTClaimsSet claims = null;
-        try{
+        try {
             SignedJWT signedJWT = SignedJWT.parse(token);
             JWSVerifier verifier = new MACVerifier(SECRET.getBytes());
-            if(signedJWT.verify(verifier)){
+            if (signedJWT.verify(verifier)) {
                 claims = signedJWT.getJWTClaimsSet();
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             logger.error(e.getMessage());
         }
         return claims;
     }
+
     private Date getExpirationDateFromToken(JWTClaimsSet claims) {
         return claims != null ? claims.getExpirationTime() : new Date();
     }
+
     private boolean isTokenExpired(JWTClaimsSet claims) {
         return getExpirationDateFromToken(claims).after(new Date());
     }
+
     public UserPrincipal getUserFromToken(String token) {
         UserPrincipal user = null;
         try {

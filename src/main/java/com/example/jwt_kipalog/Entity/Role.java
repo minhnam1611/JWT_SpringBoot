@@ -11,7 +11,7 @@ import java.util.Set;
 @Table(name = "tb_Role")
 @Getter
 @Setter
-public class Role extends Base{
+public class Role extends Base {
     private String roleName;
 
     private String roleKey;
